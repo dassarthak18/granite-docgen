@@ -37,3 +37,4 @@ chmod u+x run_docgen.sh
 
 - [ ] Make it so that prompt is stored in ``prompt.txt``.
 - [ ] Test it out on Google Colab with ``granite-3b-code-instruct-2k``.
+- [ ] Build a web app around this.
