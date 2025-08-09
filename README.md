@@ -30,3 +30,8 @@ chmod u+x run_docgen.sh
 ```
 
 ``GITHUB_TOKEN`` is the personal access token required to access private repositories in GitHub. It is not required for public repos. ``USE_GPU`` flag is set to 1 to enable CUDA usage and to 0 to run the entire inference session on CPU.
+
+## TO-DO
+
+- [ ] Make it so that prompt is stored in ``prompt.txt``.
+- [ ] Test it out on Google Colab with ``granite-3b-code-instruct-2k``.
