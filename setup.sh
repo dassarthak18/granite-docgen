@@ -22,7 +22,4 @@ echo "Cleaning up temporary cache directories..."
 # Remove HuggingFace cache to free disk (adjust if you want to keep cache)
 rm -rf ./hf_cache
 
-# Remove offload folder used during quantization
-rm -rf ./offload
-
 echo "Cleanup complete."
