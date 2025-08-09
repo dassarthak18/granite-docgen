@@ -29,7 +29,9 @@ chmod u+x run_docgen.sh
 ./run_docgen.sh <REPO_URL> <BRANCH_OR_COMMIT> <GITHUB_TOKEN or 'none'> [USE_GPU]
 ```
 
-``GITHUB_TOKEN`` is the personal access token required to access private repositories in GitHub. It is not required for public repos. ``USE_GPU`` flag is set to 1 to enable CUDA usage and to 0 to run the entire inference session on CPU.
+``GITHUB_TOKEN`` is the personal access token required to access private repositories in GitHub. It is not required for public repos. This feature is currently only available for GitHub repositories and not for other git services.
+
+``USE_GPU`` flag is set to 1 to enable CUDA usage and to 0 to run the entire inference session on CPU.
 
 ## TO-DO
 
