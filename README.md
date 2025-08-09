@@ -1,4 +1,4 @@
-# Documentation Generator powered by Langchain and IBM Granite Code
+# Automated Documentation Generator powered by Langchain and IBM Granite Code
 
 Automated documentation generator for git repositories using [**Langchain**](https://www.langchain.com/) and [``ibm-granite/granite-8b-code-instruct-128k``](https://huggingface.co/ibm-granite/granite-8b-code-instruct-128k).
 
