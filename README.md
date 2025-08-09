@@ -12,9 +12,7 @@ The setup script assumes the following:
 * all system components are up-to-date, and
 * both ``python3``and``python3-pip`` are already installed.
 
-You will require a Hugging Face user access token with ``READ`` permissions to run the script. The Hugging Face token is a one time thing and is only required for the script to set up the model for docgen.
-
-Once these configurations are ensured, simply clone this repo and run ``setup.sh``:
+You will require a Hugging Face user access token with ``READ`` permissions to run the script. The Hugging Face token is a one time thing and is only required for the script to set up the model for docgen. Once you have the token, simply clone this repo and run ``setup.sh``:
 
 ```bash
 git clone https://github.com/dassarthak18/granite-docgen.git
