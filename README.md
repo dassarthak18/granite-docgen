@@ -9,7 +9,7 @@ Automated documentation generator for git repositories using [``ibm-granite/gran
 All the dependencies are listed in ``requirements.txt``.
 
 The setup script assumes the following:
-* all system components are upgraded, and
+* all system components are up-to-date, and
 * both ``python3``and``python3-pip`` are already installed.
 
 You will require a Hugging Face user access token with ``READ`` permissions to run the script. The Hugging Face token is a one time thing and is only required for the script to set up the model for docgen.
