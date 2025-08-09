@@ -1,6 +1,6 @@
 # Documentation Generator powered by IBM Granite Code
 
-Automated documentation generator for git repository using an 8-bit quantized version of ``ibm-granite/granite-8b-code-instruct-128k`` and ``bigcode/starcoder`` for tokenization.
+Automated documentation generator for git repositories using an 8-bit quantized version of ``ibm-granite/granite-8b-code-instruct-128k`` and ``bigcode/starcoder`` for tokenization.
 
 ## Setup
 
