@@ -1,6 +1,6 @@
 # Documentation Generator powered by IBM Granite Code
 
-Automated documentation generator for git repositories using an 8-bit quantized version of [``ibm-granite/granite-8b-code-instruct-128k``](https://huggingface.co/ibm-granite/granite-8b-code-instruct-128k).
+Automated documentation generator for git repositories using [``ibm-granite/granite-8b-code-instruct-128k``](https://huggingface.co/ibm-granite/granite-8b-code-instruct-128k).
 
 ## Setup
 
