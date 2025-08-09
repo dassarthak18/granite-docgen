@@ -11,15 +11,9 @@ export HF_TOKEN
 
 echo "Using Hugging Face token from argument."
 
-# Upgrade/install dependencies
 python3 -m pip install --upgrade -r requirements.txt
-
-# Run your quantization/loader script
 python3 ./src/loader.py
 
 echo "Cleaning up temporary cache directories..."
-
-# Remove HuggingFace cache to free disk (adjust if you want to keep cache)
 rm -rf ./hf_cache
-
 echo "Cleanup complete."
