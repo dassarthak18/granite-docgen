@@ -1,5 +1,7 @@
+auto_gptq
 faiss-cpu
 gitpython
+huggingface_hub
 langchain
 langchain-community
 langchain-huggingface
