@@ -19,3 +19,6 @@ git clone https://github.com/dassarthak18/granite-docgen.git
 chmod u+x setup.sh
 ./setup.sh <HF_TOKEN>
 ```
+## System Requirements
+
+## Usage
