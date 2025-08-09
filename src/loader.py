@@ -1,18 +1,12 @@
 import os, shutil
 from huggingface_hub import snapshot_download
 
-# -------------------------
-# Configuration
-# -------------------------
 HF_TOKEN = os.environ.get("HF_TOKEN")
 if not HF_TOKEN:
     raise RuntimeError("HF_TOKEN environment variable not set. Please export your Hugging Face token before running.")
 MODEL_REPO = "ibm-granite/granite-3b-code-instruct-2k"
 OUTPUT_DIR = "./granite"
 
-# -------------------------
-# Download or reuse local
-# -------------------------
 CACHE_DIR = "./hf_cache"
 local_model_path = os.path.join(CACHE_DIR, MODEL_REPO.replace("/", "_"))
 
