@@ -21,30 +21,23 @@ DESC_ACT = False
 # Download or reuse local
 # -------------------------
 CACHE_DIR = "./hf_cache"
-os.makedirs(CACHE_DIR, exist_ok=True)
-
-# Prepare local_model_path for cached repo folder
 local_model_path = os.path.join(CACHE_DIR, MODEL_REPO.replace("/", "_"))
 
 if not os.path.exists(local_model_path):
-    print(f"Downloading model {MODEL_REPO} to cache directory...")
+    print(f"Downloading model {MODEL_REPO}...")
     local_model_path = snapshot_download(
         repo_id=MODEL_REPO,
         cache_dir=CACHE_DIR,
-        token=HF_TOKEN,
+        token=HF_TOKEN
     )
 else:
     print(f"Using cached model at {local_model_path}")
 
 # -------------------------
-# Load tokenizer from StarCoder repo
+# Load tokenizer from model dir
 # -------------------------
-print("Loading tokenizer...")
-tokenizer = AutoTokenizer.from_pretrained(
-    "bigcode/starcoder",
-    use_auth_token=HF_TOKEN,
-    use_fast=False,
-)
+tokenizer = AutoTokenizer.from_pretrained("bigcode/starcoder", token=HF_TOKEN, use_fast=False)
+tokenizer.pad_token = tokenizer.eos_token
 print("Tokenizer loaded successfully.")
 
 # -------------------------
@@ -52,7 +45,6 @@ print("Tokenizer loaded successfully.")
 # -------------------------
 quant_cfg = BaseQuantizeConfig(bits=BITS, group_size=GROUP_SIZE, desc_act=DESC_ACT)
 
-print("Loading model for quantization...")
 model = AutoGPTQForCausalLM.from_pretrained(
     local_model_path,
     quantize_config=quant_cfg,
@@ -60,11 +52,22 @@ model = AutoGPTQForCausalLM.from_pretrained(
     offload_folder="./offload",
 )
 
-print("Quantizing the model...")
-model.quantize()
+# Prepare example inputs for quantization calibration
+example_texts = [
+    "def example_function():\n    return 42",
+    "print('Hello, world!')"
+]
+
+examples = tokenizer(example_texts, padding=True, truncation=True, return_tensors=None)
+examples_list = [
+    {"input_ids": input_id, "attention_mask": attn_mask}
+    for input_id, attn_mask in zip(examples["input_ids"], examples["attention_mask"])
+]
+
+print("Quantizing...")
+model.quantize(examples=examples_list)
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-print(f"Saving quantized model to {OUTPUT_DIR} ...")
 model.save_quantized(OUTPUT_DIR, use_safetensors=True)
 tokenizer.save_pretrained(OUTPUT_DIR)
 
