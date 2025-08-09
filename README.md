@@ -2,6 +2,8 @@
 
 Automated documentation generator for git repositories using [``ibm-granite/granite-8b-code-instruct-128k``](https://huggingface.co/ibm-granite/granite-8b-code-instruct-128k).
 
+## System Requirements
+
 ## Setup
 
 All the dependencies are listed in ``requirements.txt``.
@@ -19,6 +21,5 @@ git clone https://github.com/dassarthak18/granite-docgen.git
 chmod u+x setup.sh
 ./setup.sh <HF_TOKEN>
 ```
-## System Requirements
 
 ## Usage
