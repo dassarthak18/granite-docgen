@@ -10,10 +10,6 @@ from langchain_huggingface import HuggingFaceEmbeddings
 EXCLUDE_DIRS = {".git", "node_modules", "venv", "dist", "build", "__pycache__"}
 
 def is_text_file(filepath, blocksize=512):
-    """
-    Check if a file is likely text by reading a small block.
-    Returns True if UTF-8 decodable and no null bytes.
-    """
     try:
         with open(filepath, "rb") as f:
             chunk = f.read(blocksize)
@@ -28,11 +24,6 @@ def is_text_file(filepath, blocksize=512):
         return False
 
 def fetch_repo(repo_url, branch_or_commit, local_path="repo_temp", github_token=None):
-    """
-    Clone a git repo and checkout a branch, tag, or commit.
-    Uses shallow clone for branches/tags, full clone for commits.
-    Supports optional GitHub token for private repos.
-    """
     def is_commit_hash(s):
         return all(c in "0123456789abcdef" for c in s.lower()) and len(s) in {7, 40}
 
@@ -71,10 +62,6 @@ def fetch_repo(repo_url, branch_or_commit, local_path="repo_temp", github_token=
             raise
 
 def load_text_documents(repo_path):
-    """
-    Load only text-like files from the repo by checking content,
-    skipping binaries and excluded directories.
-    """
     docs = []
     for filepath in Path(repo_path).rglob("*"):
         if not filepath.is_file():
@@ -94,9 +81,6 @@ def load_text_documents(repo_path):
     return docs
 
 def prepare_codebase_for_vectors(repo_path, output_path="vectorstore"):
-    """
-    Convert a codebase into FAISS vector embeddings (local).
-    """
     documents = load_text_documents(repo_path)
     print(f"Loaded {len(documents)} text-like files from {repo_path}")
 
