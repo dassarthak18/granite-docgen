@@ -20,6 +20,7 @@ else:
     LOCAL_REPO_PATH = fetch_repo(REPO_URL, BRANCH_OR_COMMIT, github_token=GITHUB_TOKEN)
 
 prepare_codebase_for_vectors(LOCAL_REPO_PATH)
+os.rmdir(LOCAL_REPO_PATH)
 
 embeddings = HuggingFaceEmbeddings(
         model_name="all-MiniLM-L6-v2",
