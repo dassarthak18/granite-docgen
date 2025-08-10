@@ -4,7 +4,7 @@ from langchain.chains import RetrievalQA
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.llms import HuggingFacePipeline
 from langchain_community.vectorstores import FAISS
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+from transformers import pipeline
 from parser import fetch_repo, prepare_codebase_for_vectors
 
 REPO_URL = os.environ.get("REPO_URL")
@@ -34,13 +34,10 @@ retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k
 model_path = "./granite"
 device = 0 if torch.cuda.is_available() else -1
 
-tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True, use_fast=False)
-model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True)
-
 pipe = pipeline(
     "text-generation",
-    model=model,
-    tokenizer=tokenizer,
+    model=model_path,
+    tokenizer=model_path,
     device=device,
     max_length=2048,
     do_sample=True,
