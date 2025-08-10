@@ -5,7 +5,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.llms import HuggingFacePipeline
 from langchain.vectorstores import FAISS
 from transformers import pipeline
-from src.parser import fetch_repo, prepare_codebase_for_vectors
+from parser import fetch_repo, prepare_codebase_for_vectors
 
 REPO_URL = os.environ.get("REPO_URL")
 if not REPO_URL:
@@ -48,6 +48,7 @@ pipe = pipeline(
 llm = HuggingFacePipeline(pipeline=pipe)
 qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever, return_source_documents=False)
 
-query = "Explain how the parser.py works."
+with open("query.txt", "r", encoding="utf-8") as f:
+    query = f.read().strip()
 outputs = qa_chain.invoke({"query": query})
 print("Generated Documentation:\n", outputs["result"])
