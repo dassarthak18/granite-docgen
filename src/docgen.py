@@ -48,7 +48,7 @@ pipe = pipeline(
 llm = HuggingFacePipeline(pipeline=pipe)
 qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever, return_source_documents=False)
 
-with open("query.txt", "r", encoding="utf-8") as f:
+with open("src/query.txt", "r", encoding="utf-8") as f:
     query = f.read().strip()
 outputs = qa_chain.invoke({"query": query})
 print("Generated Documentation:\n", outputs["result"])
