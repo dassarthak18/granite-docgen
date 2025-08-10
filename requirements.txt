@@ -1,3 +1,5 @@
+accelerate
+bitsandbytes
 faiss-cpu
 gitpython
 huggingface_hub
