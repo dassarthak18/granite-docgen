@@ -2,8 +2,8 @@ import os, shutil
 import torch
 from langchain.chains import RetrievalQA
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain.llms import HuggingFacePipeline
-from langchain.vectorstores import FAISS
+from langchain_community.llms import HuggingFacePipeline
+from langchain_community.vectorstores import FAISS
 from transformers import pipeline
 from src.parser import fetch_repo, prepare_codebase_for_vectors
 
