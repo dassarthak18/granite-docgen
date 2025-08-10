@@ -1,1 +1,1 @@
-Explain how the parser.py works.
+Based on the provided code snippets, generate comprehensive and clear documentation covering the main purpose of the project, key modules and functions, workflows, and any setup or usage instructions. Explain important details so that a new developer can quickly understand the codebase. Make the documentation thorough, well-structured, and easy to follow.
