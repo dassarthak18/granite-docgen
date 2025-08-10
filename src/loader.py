@@ -18,7 +18,7 @@ if not os.path.exists(clean_dir):
         cache_dir=CACHE_DIR,
         token=HF_TOKEN
     )
-    shutil.copytree(local_model_path, clean_dir)
+    shutil.move(local_model_path, clean_dir)
     print(f"Copied model files to {clean_dir}")
 else:
     print(f"Using cached model at {clean_dir}")
