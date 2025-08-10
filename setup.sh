@@ -12,6 +12,14 @@ export HF_TOKEN
 echo "Using Hugging Face token from argument."
 
 python3 -m pip install --upgrade -r requirements.txt
+
+if python3 -c "import torchvision" &> /dev/null; then
+    echo "torchvision detected — uninstalling to avoid NMS errors..."
+    python3 -m pip uninstall -y torchvision
+else
+    echo "torchvision not installed — skipping uninstall."
+fi
+
 python3 ./src/loader.py
 
 echo "Cleaning up temporary cache directories..."
