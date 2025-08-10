@@ -1,8 +1,7 @@
 import os, shutil
 import torch
 from langchain.chains import RetrievalQA
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.llms import HuggingFacePipeline
+from langchain_huggingface import HuggingFaceEmbeddings, HuggingFacePipeline
 from langchain_community.vectorstores import FAISS
 from transformers import pipeline
 from parser import fetch_repo, prepare_codebase_for_vectors
@@ -39,7 +38,7 @@ pipe = pipeline(
     model=model_path,
     tokenizer=model_path,
     device=device,
-    max_length=2048,
+    max_length=128000,
     do_sample=True,
     temperature=0.8,
     top_p=0.8,
