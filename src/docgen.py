@@ -1,18 +1,11 @@
-import os, multiprocessing
-
-num_cores = multiprocessing.cpu_count()
-os.environ["OMP_NUM_THREADS"] = str(num_cores)
-os.environ["MKL_NUM_THREADS"] = str(num_cores)
-os.environ["NUMEXPR_NUM_THREADS"] = str(num_cores)
-os.environ["OPENBLAS_NUM_THREADS"] = str(num_cores)
-
+import os, shutil
 import torch
 from langchain.chains import RetrievalQA
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain.llms import HuggingFacePipeline, LlamaCpp
+from langchain.llms import HuggingFacePipeline
 from langchain.vectorstores import FAISS
-from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
-from parser import fetch_repo, prepare_codebase_for_vectors
+from transformers import pipeline
+from src.parser import fetch_repo, prepare_codebase_for_vectors
 
 REPO_URL = os.environ.get("REPO_URL")
 if not REPO_URL:
@@ -25,28 +18,32 @@ if not GITHUB_TOKEN:
     LOCAL_REPO_PATH = fetch_repo(REPO_URL, BRANCH_OR_COMMIT)
 else:
     LOCAL_REPO_PATH = fetch_repo(REPO_URL, BRANCH_OR_COMMIT, github_token=GITHUB_TOKEN)
-USE_GPU = os.environ.get("USE_GPU", "0")
 
 prepare_codebase_for_vectors(LOCAL_REPO_PATH)
 shutil.rmtree(LOCAL_REPO_PATH)
 
 embeddings = HuggingFaceEmbeddings(
         model_name="all-MiniLM-L6-v2",
-        model_kwargs={"device": "cuda" if USE_GPU == "1" else "cpu"},
+        model_kwargs={"device": "cuda" if os.environ.get("USE_GPU", "0") == "1" else "cpu"},
         encode_kwargs={"batch_size": 64}
 )
 
 vectorstore = FAISS.load_local("vectorstore", embeddings=embeddings, allow_dangerous_deserialization=True)
 retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 5})
 
-if device == -1:
-  quant_config = BitsAndBytesConfig(load_in_8bit=True,)
-  tokenizer = AutoTokenizer.from_pretrained(model_path)
-  model = AutoModelForCausalLM.from_pretrained(model_path, quantization_config=quant_config, device_map="cpu")
-  pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_length=2048, do_sample=False,)
+model_path = "./granite"
+device = 0 if torch.cuda.is_available() else -1
 
-else:
-  pipe = pipeline("text-generation", model=model_path, tokenizer=model_path, device=device, max_length=2048, do_sample=True, temperature=0.8, top_p=0.8,)
+pipe = pipeline(
+    "text-generation",
+    model=model_path,
+    tokenizer=model_path,
+    device=device,
+    max_length=2048,
+    do_sample=True,
+    temperature=0.8,
+    top_p=0.8,
+)
 
 llm = HuggingFacePipeline(pipeline=pipe)
 qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever, return_source_documents=False)
