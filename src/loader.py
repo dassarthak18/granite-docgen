@@ -4,7 +4,7 @@ from huggingface_hub import snapshot_download
 HF_TOKEN = os.environ.get("HF_TOKEN")
 if not HF_TOKEN:
     raise RuntimeError("HF_TOKEN environment variable not set. Please export your Hugging Face token before running.")
-MODEL_REPO = "ibm-granite/granite-3b-code-instruct-2k"
+MODEL_REPO = "ibm-granite/granite-8b-code-instruct-128k"
 OUTPUT_DIR = "./granite"
 
 CACHE_DIR = "./hf_cache"
