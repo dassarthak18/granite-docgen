@@ -5,7 +5,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.llms import HuggingFacePipeline
 from langchain_community.vectorstores import FAISS
 from transformers import pipeline
-from src.parser import fetch_repo, prepare_codebase_for_vectors
+from parser import fetch_repo, prepare_codebase_for_vectors
 
 REPO_URL = os.environ.get("REPO_URL")
 if not REPO_URL:
