@@ -16,6 +16,7 @@ You will require a Hugging Face user access token with ``READ`` permissions to r
 
 ```bash
 git clone https://github.com/dassarthak18/granite-docgen.git
+cd granite-docgen
 chmod u+x setup.sh
 ./setup.sh <HF_TOKEN>
 ```
