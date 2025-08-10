@@ -4,7 +4,6 @@ huggingface_hub
 langchain
 langchain-community
 langchain-huggingface
-llama-cpp-python
 sentence-transformers
 transformers
 torch
