@@ -2,7 +2,7 @@ import os, shutil
 import torch
 from langchain.chains import RetrievalQA
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain.llms import HuggingFacePipeline, LlamaCpp
+from langchain.llms import HuggingFacePipeline
 from langchain.vectorstores import FAISS
 from transformers import pipeline
 from parser import fetch_repo, prepare_codebase_for_vectors
@@ -34,22 +34,8 @@ retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k
 
 model_path = "./granite"
 device = 0 if torch.cuda.is_available() else -1
-
-if device == -1:
-    llm = LlamaCpp(model_path=model_path, n_ctx=2048, temperature=0.8, top_p=0.8)
-else:
-    pipe = pipeline(
-        "text-generation",
-        model=model_path,
-        tokenizer=model_path,
-        device=device,
-        max_length=2048,
-        do_sample=True,
-        temperature=0.8,
-        top_p=0.8,
-    )
-    llm = HuggingFacePipeline(pipeline=pipe)
-
+pipe = pipeline("text-generation", model=model_path, tokenizer=model_path, device=device, max_length=2048, do_sample=True, temperature=0.8, top_p=0.8)
+llm = HuggingFacePipeline(pipeline=pipe)
 qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever, return_source_documents=False)
 
 with open("query.txt", "r", encoding="utf-8") as f:
