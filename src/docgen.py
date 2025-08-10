@@ -34,7 +34,7 @@ retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k
 model_path = "./granite"
 device = 0 if torch.cuda.is_available() else -1
 
-tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True, use_fast=False)
 model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True)
 
 pipe = pipeline(
