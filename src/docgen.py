@@ -1,10 +1,17 @@
-import os, shutil
+import os, multiprocessing
+
+num_cores = multiprocessing.cpu_count()
+os.environ["OMP_NUM_THREADS"] = str(num_cores)
+os.environ["MKL_NUM_THREADS"] = str(num_cores)
+os.environ["NUMEXPR_NUM_THREADS"] = str(num_cores)
+os.environ["OPENBLAS_NUM_THREADS"] = str(num_cores)
+
 import torch
 from langchain.chains import RetrievalQA
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain.llms import HuggingFacePipeline
+from langchain.llms import HuggingFacePipeline, LlamaCpp
 from langchain.vectorstores import FAISS
-from transformers import pipeline
+from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from parser import fetch_repo, prepare_codebase_for_vectors
 
 REPO_URL = os.environ.get("REPO_URL")
@@ -32,9 +39,15 @@ embeddings = HuggingFaceEmbeddings(
 vectorstore = FAISS.load_local("vectorstore", embeddings=embeddings, allow_dangerous_deserialization=True)
 retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 5})
 
-model_path = "./granite"
-device = 0 if torch.cuda.is_available() else -1
-pipe = pipeline("text-generation", model=model_path, tokenizer=model_path, device=device, max_length=2048, do_sample=True, temperature=0.8, top_p=0.8)
+if device == -1:
+  quant_config = BitsAndBytesConfig(load_in_8bit=True,)
+  tokenizer = AutoTokenizer.from_pretrained(model_path)
+  model = AutoModelForCausalLM.from_pretrained(model_path, quantization_config=quant_config, device_map="cpu")
+  pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_length=2048, do_sample=False,)
+
+else:
+  pipe = pipeline("text-generation", model=model_path, tokenizer=model_path, device=device, max_length=2048, do_sample=True, temperature=0.8, top_p=0.8,)
+
 llm = HuggingFacePipeline(pipeline=pipe)
 qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever, return_source_documents=False)
 
