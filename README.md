@@ -21,6 +21,8 @@ chmod u+x setup.sh
 ./setup.sh <HF_TOKEN>
 ```
 
+If you're running this on Google Colab, please manually run ``pip3 uninstall -y torchvision`` before proceeding with ``run_docgen.sh``.
+
 ## Usage
 
 To use the documentation generator, run the ``run_docgen.sh`` script:
